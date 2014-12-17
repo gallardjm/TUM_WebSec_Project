@@ -4,7 +4,7 @@ include_once "RSAEngine.php";
 
 class ProblemManager {
 	
-	const DEBUG = true;
+	const STORE_ALL = true;
 	
 	const ALICE_TEXT = "Hi, it's Alice. I would like to register. The passphrase is 'The cake is a lie'.";
 	const ADMIN_TEXT = "Hi Alice. You can register using the username ##aliceUsername##. Btw change your RSA key ASAP!!!";
@@ -41,7 +41,7 @@ class ProblemManager {
 		$sessionManager->setData('alicePublicKey', $aliceKeys['publicKey']);
 		$sessionManager->setData('adminPublicKey', $adminKeys['publicKey']);
 		
-		if(self::DEBUG) {
+		if(self::STORE_ALL) {
 			$sessionManager->setData('aliceText', $aliceText);
 			$sessionManager->setData('adminText', $adminText);
 			$sessionManager->setData('alicePrivateKey', $aliceKeys['privateKey']);	

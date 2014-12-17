@@ -11,15 +11,15 @@
 class SessionManager {
 
 	//configuration
-	private $sessionLifeTime = 259201; //3 days
-	private $sessionPath = '/var/www/team2/project/sessions';
+	const SESSION_LIFETIME = 259201; //3 days
+	const SESSION_PATH = '/var/www/team2/project/sessions';
 
 	protected $data; //array
 
 	public function __construct() {
-		ini_set('session.gc_maxlifetime', $this->sessionLifeTime);
-		ini_set('session.cookie_lifetime', $this->sessionLifeTime);
-		//session_save_path($this->sessionPath);
+		ini_set('session.gc_maxlifetime', self::SESSION_LIFETIME);
+		ini_set('session.cookie_lifetime', self::SESSION_LIFETIME);
+		session_save_path(self::SESSION_PATH);
 		session_start();
 	
 		if(!isset($_SESSION['data'])) 
