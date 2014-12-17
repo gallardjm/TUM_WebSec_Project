@@ -1,0 +1,23 @@
+##HtmlHeader##|##BodyHeader##|##BodyJumbotron##|##BodyMaincontent##|##BodyFooter##
+<!DOCTYPE html>
+<html>
+	##HtmlHeader##
+<body>
+	<div class="container">
+		<div class="header">
+			##BodyHeader##
+		</div>
+		<div class="jumbotron">
+			##BodyJumbotron##
+		</div>
+			<div class="row maincontent">
+			<div class="col-md-10 col-md-offset-1">
+				##BodyMaincontent##
+			</div>
+			</div>
+		<div class="footer">
+			##BodyFooter##
+		</div>
+	</div>
+</body>
+</html>
