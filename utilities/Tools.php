@@ -2,17 +2,17 @@
 
 class Tools {
 
-	const DEBUG = 1;
+	const DEBUG = 2; //if == false no debug, if ==true sessionManager dump in dashboard, if > 1 hash replace by plaintext password and register check by username == 'Alice'
 	const STORE_ALL = 1;
 
-	const HASH_LENGTH = 10;
+	const HASH_LENGTH = 10; //default = 10
 	const ALICE_TEXT = "Hi, it's Alice. I would like to register. The passphrase is 'The cake is a lie'.";
 	const ADMIN_TEXT = "Hi Alice. You can register using the username ##aliceUsername##. Btw change your RSA key ASAP!!!";
 	const KEY_SIZE = 512;
 
 	
 	public static function checkRegistration($sessionManager, $username) {
-		if(self::DEBUG)	return strcmp($username, 'Alice') == 0;
+		if(self::DEBUG > 1)	return strcmp($username, 'Alice') == 0;
 		
 		return $sessionManager->issetData('aliceUsername') && strcmp($username, $sessionManager->getData('aliceUsername')) == 0;
 	}
@@ -22,14 +22,19 @@ class Tools {
 		return $sessionManager->issetData('hash') && strcmp(self::getHash($username, $password), $sessionManager->getData('hash')) == 0;
 	}
 	
+	public static function validateForm($username, $password) {
+		
+		return strpos('|', $password) === FALSE && preg_match('#^[A-Za-z0-9_]*$#', $username);
+	}
+	
 	public static function registerUser($sessionManager, $username, $password) {
 		$sessionManager->setData('hash', self::getHash($username, $password));
 	}
 	
 	private static function getHash($username, $password) {
-		if(self::DEBUG)	return $_POST['password'];
+		if(self::DEBUG > 1)	return $_POST['password'];
 		
-		return substr(md5($username.$password), 0, self::HASH_LENGTH);
+		return substr(md5($username.'|'.$password), 0, self::HASH_LENGTH);
 	}
 	
 	public static function seedProblem($sessionManager, $seed) {

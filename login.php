@@ -24,15 +24,17 @@ Jumbotron;
 		<label>Password</label>
 		<input type="password" class="form-control" name="password">
 	</div>
-	<button type="submit" class="btn btn-success btn-block">Login</button>
+	<button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
 </form>
 <br>
-<p><a role="button" href="index.php" class="btn btn-info btn-block">Back to index</a></p>	
+<p><a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>	
 LoginForm;
 
 		$templateEngine->setContent("##BodyMaincontent##", $loginForm);		
 	} else {
-		if(!Tools::checkLogin($sessionManager, $_POST['username'], $_POST['password'])) {
+		if(!Tools::validateForm($_POST['username'],$_POST['password'])){
+			$maincontent = '<div class="alert alert-danger">Invalid characters input<ul><li>Username shall only use alphanumerics and _</li><li>Password cannot use "|"</li></ul></div>';
+		} else if(!Tools::checkLogin($sessionManager, $_POST['username'], $_POST['password'])) {
 			$maincontent = '<div class="alert alert-danger">Invalid login !!!</div>';
 		} else {
 			$maincontent = '<div class="alert alert-success">Welcome '.$_POST['username'].'</div>';

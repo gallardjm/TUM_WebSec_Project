@@ -24,15 +24,17 @@ Jumbotron;
 		<label>Password</label>
 		<input type="password" class="form-control" name="password">
 	</div>
-	<button type="submit" class="btn btn-primary btn-block">Register</button>
+	<button type="submit" class="btn btn-lg btn-primary btn-block">Register</button>
 </form>
 <br>
-<p><a role="button" href="index.php" class="btn btn-info btn-block">Back to index</a></p>	
+<p><a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>	
 RegistrationForm;
 
 		$templateEngine->setContent("##BodyMaincontent##", $registrationForm);		
 	} else {
-		if(!Tools::checkRegistration($sessionManager, $_POST['username'])) {
+		if(!Tools::validateForm($_POST['username'],$_POST['password'])){
+			$maincontent = '<div class="alert alert-danger">Invalid characters input<ul><li>Username shall only use alphanumerics and _</li><li>Password cannot use "|"</li></ul></div>';
+		} else if(!Tools::checkRegistration($sessionManager, $_POST['username'])) {
 			$maincontent = '<div class="alert alert-danger">Unknown username !!!</div>';
 		} else {
 			Tools::registerUser($sessionManager, $_POST['username'],$_POST['password']);
