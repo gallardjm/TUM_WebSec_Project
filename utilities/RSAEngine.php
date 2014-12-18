@@ -25,12 +25,28 @@ class RSAEngine {
 		return $text;
 	}
 	
+	public function generateGoodKeys($bits) {
+		$config = array(
+			"digest_alg" => "md5",
+			"private_key_bits" => $bits,
+			"private_key_type" => OPENSSL_KEYTYPE_RSA,
+		);
+
+		// Create the private and public key
+		$res = openssl_pkey_new($config);
+		
+		openssl_pkey_export($res, $privKey);
+		$pubKey = openssl_pkey_get_details($res);
+		$pubKey = $pubKey["key"];
+		
+		return array('privateKey' => $privKey, 'publicKey' => $pubKey);
+	}
+	
 	//Generate keys, if $faulty one of the primes will be 5
 	//use mt_rand() as random source
-	public function generateKeys($bits, $faulty = false) {
+	public function generateFaultyKeys($bits) {
 	
-		if($faulty)
-			$bits *= 2; //one of the prime will be 5, the other prime must be twice as big as planned to compensate
+		$bits -= 2;
 	
 		if($bits > self::CRYPT_RSA_SMALLEST_PRIME)
 			throw new InvalidArgumentException('too big');
@@ -63,11 +79,7 @@ class RSAEngine {
 					}
 					$primes[$i] = $generator->randomPrime($min, $finalMax, false);
 				} else {
-					if($faulty) 
-						$primes[$i] = new Math_BigInteger(5);
-					else
-						$primes[$i] = $generator->randomPrime($min, $max, false);
-					
+					$primes[$i] = new Math_BigInteger(5); //faulty prime
 				}				
 
 				$n = $n->multiply($primes[$i]);

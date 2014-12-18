@@ -8,7 +8,8 @@ class Tools {
 	const HASH_LENGTH = 10; //default = 10
 	const ALICE_TEXT = "Hi, it's Alice. I would like to register. The passphrase is 'The cake is a lie'.";
 	const ADMIN_TEXT = "Hi Alice. You can register using the username ##aliceUsername##. Btw change your RSA key ASAP!!!";
-	const KEY_SIZE = 512;
+	const ALICE_KEY_SIZE = 1024;
+	const ADMIN_KEY_SIZE = 4096;
 
 	
 	public static function checkRegistration($sessionManager, $username) {
@@ -48,8 +49,8 @@ class Tools {
 		$adminText = str_replace('##aliceUsername##', $aliceUsername, self::ADMIN_TEXT);
 		
 		$rsaEngine = new RSAEngine();
-		$aliceKeys = $rsaEngine->generateKeys(self::KEY_SIZE, true); //faulty key 
-		$adminKeys = $rsaEngine->generateKeys(self::KEY_SIZE, false);
+		$aliceKeys = $rsaEngine->generateFaultyKeys(self::ALICE_KEY_SIZE); //faulty key 
+		$adminKeys = $rsaEngine->generateGoodKeys(self::ADMIN_KEY_SIZE);
 		
 		
 		$aliceCyphertext = $rsaEngine->encrypt($aliceText, $adminKeys['publicKey']);
