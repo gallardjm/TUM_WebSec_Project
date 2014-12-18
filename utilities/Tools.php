@@ -11,11 +11,9 @@ class Tools {
 	const ALICE_KEY_SIZE = 1024;
 	const ADMIN_KEY_SIZE = 4096;
 
-	
-	public static function checkRegistration($sessionManager, $username) {
-		if(self::DEBUG > 1)	return strcmp($username, 'Alice') == 0;
+	public static function validateForm($username, $password) {
 		
-		return $sessionManager->issetData('aliceUsername') && strcmp($username, $sessionManager->getData('aliceUsername')) == 0;
+		return strpos('|', $password) === FALSE && preg_match('#^[A-Za-z0-9_]*$#', $username);
 	}
 	
 	public static function checkLogin($sessionManager, $username, $password) {	
@@ -23,9 +21,14 @@ class Tools {
 		return $sessionManager->issetData('hash') && strcmp(self::getHash($username, $password), $sessionManager->getData('hash')) == 0;
 	}
 	
-	public static function validateForm($username, $password) {
+	public static function checkRegistration($sessionManager, $username) {
+		if(self::DEBUG > 1)	return strcmp($username, 'Alice') == 0;
 		
-		return strpos('|', $password) === FALSE && preg_match('#^[A-Za-z0-9_]*$#', $username);
+		return $sessionManager->issetData('aliceUsername') && strcmp($username, $sessionManager->getData('aliceUsername')) == 0;
+	}
+	
+	public static function alreadyRegister($sessionManager) {
+		return $sessionManager->issetData('hash');
 	}
 	
 	public static function registerUser($sessionManager, $username, $password) {
