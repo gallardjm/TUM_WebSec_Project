@@ -28,7 +28,7 @@
 <br><br>
 <h3>Important remarks</h3>
 <p class="text-justify">This problem is dynamically generated.<br>
-Your instance of the problem is stored in a session file so don't forget to include a session cookie in your script.<br>
+Your instance of the problem is stored in a session file so don't forget to include a session cookie in your script and to first visit this page to generate an instance.<br>
 Use the following form to generate a different instance of this problem with a given seed (for a random seed put a negative seed)</p>
 <form class="form-inline" role="form" method="post" name="reset-form" action="dashboard.php">
 	<div class="form-group">

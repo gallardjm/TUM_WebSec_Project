@@ -24,8 +24,10 @@ Jumbotron;
 		<label>Password</label>
 		<input type="password" class="form-control" name="password">
 	</div>
-	<button type="submit" class="btn btn-primary btn-block">Login</button>
-</form>		
+	<button type="submit" class="btn btn-success btn-block">Login</button>
+</form>
+<br>
+<p><a role="button" href="index.php" class="btn btn-info btn-block">Back to index</a></p>	
 LoginForm;
 
 		$templateEngine->setContent("##BodyMaincontent##", $loginForm);		
