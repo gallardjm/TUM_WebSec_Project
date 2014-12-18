@@ -33,11 +33,14 @@ LoginForm;
 		$templateEngine->setContent("##BodyMaincontent##", $loginForm);		
 	} else {
 		if(!Tools::validateForm($_POST['username'],$_POST['password'])){
-			$maincontent = '<div class="alert alert-danger">Invalid characters input<ul><li>Username shall only use alphanumerics and _</li><li>Password cannot use "|"</li></ul></div>';
+			$maincontent = '<div class="alert alert-danger">Invalid characters input!!!<ul><li>Username shall only use alphanumerics and _</li><li>Password cannot use "|"</li></ul></div>';
 		} else if(!Tools::checkLogin($sessionManager, $_POST['username'], $_POST['password'])) {
-			$maincontent = '<div class="alert alert-danger">Invalid login !!!</div>';
+			$maincontent = '<div class="alert alert-danger">Invalid login!!!</div>';
 		} else {
 			$maincontent = '<div class="alert alert-success">Welcome '.$_POST['username'].'</div>';
+			if(strtolower($_POST['username']) == 'admin') {
+				$maincontent .= '<div class="alert alert-info">Reminder: buy a cake for Eve\'s birthday. It isn\'t a lie!</div>';
+			}
 		}
 		$templateEngine->setContent("##BodyMaincontent##", $maincontent);	
 	}

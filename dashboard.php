@@ -17,7 +17,7 @@
 		$seed = $sessionManager->getData('seed');
 	}
 	
-	$jumbotron = "<h1>Eve's dashboard</h1><br><p>Seed: $seed</p>";
+	$jumbotron = "<h1>Eve's dashboard</h1><br><p><strong>Goal:</strong> Log into Secret Chat with username = Admin</p><p><strong>Seed</strong> #$seed</p>";
 	
 	$maincontent = <<<MainContent
 <p><strong>Code leak:</strong> <code>\$hash = substr(md5(\$username.'|'.\$password), 0, ##hashlength##)</code></p>
@@ -45,7 +45,7 @@ MainContent;
 		if(!$sessionManager->issetData('test')) $sessionManager->setData('test', -1);
 		$test = $sessionManager->getData('test') +1;
 		$sessionManager->setData('test', $test);
-		$jumbotron .= '<p>Cake #'.$test.'</p><p class="lead">DATA DUMP ON (see utilities/Tools.php)</p>';
+		$jumbotron .= '<p>---------------------------------------------------------</p><p>Cake #'.$test.'</p><p class="lead">DATA DUMP ON (see utilities/Tools.php)</p>';
 	}
 	
 	if(Tools::DEBUG > 1) {
