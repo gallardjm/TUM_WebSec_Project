@@ -10,6 +10,8 @@
 	
 	You can set tags value with setContent($tag, $value)
 	
+	You can add a style to the header with addStyle($style)
+	
 	You can render a page with the render() method	
 */
 class TemplateEngine {
@@ -33,7 +35,7 @@ HtmlHeader;
 			throw new InvalidArgumentException("No template file");
 		
 		$this->content = array();
-		$this->setStyle($templatePath);
+		$this->setTemplate($templatePath);
 		if(!isset($this->content["##HtmlHeader##"])) 
 			throw new InvalidArgumentException("Template has no HtmlHeader tag");
 		$this->content["##HtmlHeader##"] = $this->defaultHtmlHeader;
@@ -45,6 +47,21 @@ HtmlHeader;
 		$this->content[$tag] = $value;
 	}
 	
+	//Add a style in the header
+	public function addStyle($style) {
+		$match = array();
+		$HtmlHeader = $this->content["##HtmlHeader##"];
+		if(preg_match('#(.*<style>.*)(</style>.*)#Usi', $HtmlHeader, $match)) {
+			$HtmlHeader = $match[1].' '.$style.$match[2];
+		} else {
+			$match = array();
+			if(!preg_match('#(.*<head>.*)(</head>.*)#Usi', $HtmlHeader, $match))
+				throw new InvalidArgumentException('Invalid HtmlHeader');
+			$HtmlHeader = $match[1]."\n<style>".$style."</style>\n".$match[2];
+		}
+		$this->content["##HtmlHeader##"] = $HtmlHeader;
+	}
+	
 	public function render() {
 		$page = $this->template;
 		foreach($this->content as $key=>$value) {
@@ -54,14 +71,14 @@ HtmlHeader;
 		echo $page;
 	}
 	
-	private function setStyle($templatePath) {
-		$rawStyle = file_get_contents($templatePath);
-		$firstLineLength = strpos($rawStyle,"\n");
-		$tags = explode("|", substr($rawStyle, 0, $firstLineLength-1));
+	private function setTemplate($templatePath) {
+		$rawTemplate = file_get_contents($templatePath);
+		$firstLineLength = strpos($rawTemplate,"\n");
+		$tags = explode("|", substr($rawTemplate, 0, $firstLineLength-1));
 		foreach($tags as $value) {
 			$this->content[$value] = "";
 		}
-		$this->template = substr($rawStyle, $firstLineLength+1);
+		$this->template = substr($rawTemplate, $firstLineLength+1);
 	}
 }
 
