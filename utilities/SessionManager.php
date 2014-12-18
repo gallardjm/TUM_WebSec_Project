@@ -57,5 +57,9 @@ class SessionManager {
 	public function dump() {
 		var_dump($this->data);
 	}
+	
+	public function dropAll() {
+		$this->data = array();
+	}
 }
 ?>

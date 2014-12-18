@@ -3,9 +3,14 @@
 class Tools {
 
 	const DEBUG = 1;
+	const STORE_ALL = 1;
 
 	const HASH_LENGTH = 10;
+	const ALICE_TEXT = "Hi, it's Alice. I would like to register. The passphrase is 'The cake is a lie'.";
+	const ADMIN_TEXT = "Hi Alice. You can register using the username ##aliceUsername##. Btw change your RSA key ASAP!!!";
+	const KEY_SIZE = 512;
 
+	
 	public static function checkRegistration($sessionManager, $username) {
 		if(self::DEBUG)	return strcmp($username, 'Alice') == 0;
 		
@@ -25,6 +30,44 @@ class Tools {
 		if(self::DEBUG)	return $_POST['password'];
 		
 		return substr(md5($username.$password), 0, self::HASH_LENGTH);
+	}
+	
+	public static function seedProblem($sessionManager, $seed) {
+	
+		require_once("RSAEngine.php");
+		
+		mt_srand($seed+1);
+		
+		$aliceUsername = 'AliCat_'.mt_rand();
+		$aliceText = self::ALICE_TEXT;
+		$adminText = str_replace('##aliceUsername##', $aliceUsername, self::ADMIN_TEXT);
+		
+		$rsaEngine = new RSAEngine();
+		$aliceKeys = $rsaEngine->generateKeys(self::KEY_SIZE, true); //faulty key 
+		$adminKeys = $rsaEngine->generateKeys(self::KEY_SIZE, false);
+		
+		
+		$aliceCyphertext = $rsaEngine->encrypt($aliceText, $adminKeys['publicKey']);
+		$adminCyphertext = $rsaEngine->encrypt($adminText, $aliceKeys['publicKey']);
+		$aliceTextTest = $rsaEngine->decrypt($aliceCyphertext, $adminKeys['privateKey']);
+		$adminTextTest = $rsaEngine->decrypt($adminCyphertext, $aliceKeys['privateKey']);
+		
+		if(0 != strcmp($aliceText, $aliceTextTest) || 0 != strcmp($adminText, $adminTextTest))
+			throw new Exception('key generation failled !!!');
+			
+		$sessionManager->setData('seed', $seed);
+		$sessionManager->setData('aliceUsername', $aliceUsername);
+		$sessionManager->setData('aliceCyphertext', $aliceCyphertext);
+		$sessionManager->setData('adminCyphertext', $adminCyphertext);
+		$sessionManager->setData('alicePublicKey', $aliceKeys['publicKey']);
+		$sessionManager->setData('adminPublicKey', $adminKeys['publicKey']);
+		
+		if(self::STORE_ALL) {
+			$sessionManager->setData('aliceText', $aliceText);
+			$sessionManager->setData('adminText', $adminText);
+			$sessionManager->setData('alicePrivateKey', $aliceKeys['privateKey']);	
+			$sessionManager->setData('adminPrivateKey', $adminKeys['privateKey']);
+		}
 	}
 }
 

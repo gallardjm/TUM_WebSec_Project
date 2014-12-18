@@ -7,24 +7,37 @@
 	$templateEngine = new TemplateEngine();
 	$sessionManager = new SessionManager();
 	
-	$seed = $sessionManager->issetData('seed') ? $sessionManager->getData('seed') : 10;
-	if(!$sessionManager->issetData('adminPublicKey') || isset($_GET['reset'])) {
-		include "utilities/ProblemManager.php";
-		if(isset($_GET['seed']) && is_numeric($_GET['seed']))
-			$seed = $_GET['seed'];
-		ProblemManager::seed($sessionManager, $seed);
+	$seed = $sessionManager->issetData('seed') ? $sessionManager->getData('seed') : rand();
+	if(!$sessionManager->issetData('adminPublicKey') || isset($_POST['seed'])) {
+		if(isset($_POST['seed']) && is_numeric($_POST['seed']) && $_POST['seed'] >= 0)
+			$seed = $_POST['seed'];
+		else $seed = rand();
+		$sessionManager->dropAll();
+		Tools::seedProblem($sessionManager, $seed);
 	}
 	
 	if(!$sessionManager->issetData('test')) $sessionManager->setData('test', -1);
 	$test = $sessionManager->getData('test') +1;
 	$sessionManager->setData('test', $test);
 	
-	$jumbotron = "<h1>Eve's hacking dashboard</h1><p>Cake #$test</p><p>Seed: $seed</p>";
+	$jumbotron = "<h1>Eve's dashboard</h1><p>Cake #$test</p><p>Seed: $seed</p>";
 	
-	$maincontent = <<<Buttons
-<a role="button" href="index.php" class="btn btn-lg btn-success btn-block">Secret chat</a>
+	$maincontent = <<<MainContent
+<a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Secret chat</a>
 <a role="button" href="#" class="btn btn-lg btn-danger btn-block">Eavesdropped conversation</a>
-Buttons;
+<br><br>
+<h3>Important remarks</h3>
+<p class="text-justify">This problem is dynamically generated.<br>
+Your instance of the problem is stored in a session file so don't forget to include a session cookie in your script.<br>
+Use the following form to generate a different instance of this problem with a given seed (for a random seed put a negative seed)</p>
+<form class="form-inline" role="form" method="post" name="reset-form" action="dashboard.php">
+	<div class="form-group">
+		<label>seed</label>
+		<input type="number" class="form-control" name="seed">
+	</div>
+	<button type="submit" class="btn btn-primary">Get a new instance</button>
+</form>	
+MainContent;
 	/*
 	$maincontent .= '<p>Alice Cyphertext:<br>'.$sessionManager->getData('aliceCyphertext')
 				.'<br><br>=> '.$sessionManager->getData('aliceText').'</p>'
