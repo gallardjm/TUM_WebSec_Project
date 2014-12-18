@@ -7,13 +7,14 @@
 	$templateEngine = new TemplateEngine();
 	$sessionManager = new SessionManager();
 	
-	$seed = $sessionManager->issetData('seed') ? $sessionManager->getData('seed') : rand();
-	if(!$sessionManager->issetData('adminPublicKey') || isset($_POST['seed'])) {
-		if(isset($_POST['seed']) && is_numeric($_POST['seed']) && $_POST['seed'] >= 0)
+	if(isset($_POST['seed'])) {
+		if(is_numeric($_POST['seed']) && $_POST['seed'] >= 0)
 			$seed = $_POST['seed'];
-		else $seed = rand();
-		$sessionManager->dropAll();
-		Tools::seedProblem($sessionManager, $seed);
+		else
+			$seed = rand();
+		$sessionManager->reset($seed);
+	} else {	
+		$seed = $sessionManager->getData('seed');
 	}
 	
 	$jumbotron = "<h1>Eve's dashboard</h1><br><p>Seed: $seed</p>";
@@ -26,9 +27,9 @@
 <br>
 <br>
 <h3>Important remark</h3><br>
-<p class="text-justify"><strong>This problem is dynamically generated.</strong><br><br>
-Your instance of the problem is stored in a session file so don't forget to include a session cookie in your script and to first visit this page to generate an instance.<br><br>
-Use the following form to generate a different instance of this problem with a given seed (for a random seed put a negative seed)</p><br>
+<p class="text-justify"><strong>This problem is dynamically generated.</strong></p>
+<p>Your instance of the problem is stored in a session file so don't forget to include a session cookie in your script.</p>
+<p>Use the following form to generate a different instance of this problem with a given seed (for a random seed put a negative seed)</p><br>
 <form class="form-inline" role="form" method="post" name="reset-form" action="dashboard.php">
 	<div class="form-group">
 		<label>seed</label>
@@ -44,7 +45,7 @@ MainContent;
 		if(!$sessionManager->issetData('test')) $sessionManager->setData('test', -1);
 		$test = $sessionManager->getData('test') +1;
 		$sessionManager->setData('test', $test);
-		$jumbotron .= '<p>Cake #$test</p><p class="lead">DATA DUMP ON (see utilities/Tools.php)</p>';
+		$jumbotron .= '<p>Cake #'.$test.'</p><p class="lead">DATA DUMP ON (see utilities/Tools.php)</p>';
 	}
 	
 	if(Tools::DEBUG > 1) {

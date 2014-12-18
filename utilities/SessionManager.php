@@ -16,20 +16,28 @@ class SessionManager {
 
 	protected $data; //array
 
-	public function __construct() {
+	public function __construct($seed = -1) {
 		ini_set('session.gc_maxlifetime', self::SESSION_LIFETIME);
 		ini_set('session.cookie_lifetime', self::SESSION_LIFETIME);
 		session_save_path(self::SESSION_PATH);
 		session_start();
 	
 		if(!isset($_SESSION['data'])) 
-			$this->data = array();
+			$this->reset($seed);
 		else
 			$this->data = unserialize(base64_decode($_SESSION['data']));
 	}
 	
 	public function __destruct() {
 		$_SESSION['data'] = base64_encode(serialize($this->data));
+	}
+	
+	public function reset($seed) {
+	
+		require_once("Tools.php");
+
+		$this->data = array();
+		Tools::seedProblem($this, ((is_numeric($seed) && $seed>=0) ? $seed : rand()));
 	}
 	
 	public function setData($key, $value) {
@@ -57,9 +65,6 @@ class SessionManager {
 	public function dump() {
 		var_dump($this->data);
 	}
-	
-	public function dropAll() {
-		$this->data = array();
-	}
+
 }
 ?>
