@@ -4,7 +4,7 @@
 	include "utilities/Tools.php";
 
 	$templateEngine = new TemplateEngine();
-	$sessionManager = new SessionManager();
+	$sessionManager = SessionManager::getInstance();
 	
 	$jumbotron = <<<Jumbotron
 <h1>Login</h1>

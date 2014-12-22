@@ -5,15 +5,16 @@
 
 	
 	$templateEngine = new TemplateEngine();
-	$sessionManager = new SessionManager();
+	$sessionManager = null;
 	
 	if(isset($_POST['seed'])) {
 		if(is_numeric($_POST['seed']) && $_POST['seed'] >= 0)
 			$seed = $_POST['seed'];
 		else
 			$seed = rand();
-		$sessionManager->reset($seed);
-	} else {	
+		$sessionManager = SessionManager::getInstanceResetSeed($seed);
+	} else {
+		$sessionManager = SessionManager::getInstance();
 		$seed = $sessionManager->getData('seed');
 	}
 	
@@ -26,10 +27,12 @@
 <a role="button" href="eavesdrop.php" class="btn btn-lg btn-danger btn-block">Eavesdropped conversation</a>
 <br>
 <br>
-<h3>Important remark</h3><br>
-<p class="text-justify"><strong>This problem is dynamically generated.</strong></p>
-<p>Your instance of the problem is stored in a session file so don't forget to include a session cookie in your script.</p>
-<p>Use the following form to generate a different instance of this problem with a given seed (for a random seed put a negative seed)</p><br>
+<h3>README</h3><br>
+<p class="text-justify"><strong>This problem is dynamically and randomly generated.</strong></p>
+<p class="text-justify">Your instance of the problem is stored in a session file so don't forget to include a session cookie in your script.</p>
+<p class="text-justify">For your script, you can start an instance of the problem with a fixed seed by doing a POST request to this page with a parameter 'seed' (int>0).</p>
+<p class="text-justify">Your exploit should be able to crack instances of this problem with any given seed.</p>
+<p class="text-justify">Use the following form to generate a different instance of this problem with a given seed (for a random seed put a negative value)</p><br>
 <form class="form-inline" role="form" method="post" name="reset-form" action="dashboard.php">
 	<div class="form-group">
 		<label>seed</label>

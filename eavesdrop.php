@@ -3,7 +3,7 @@
 	include "utilities/SessionManager.php";
 
 	$templateEngine = new TemplateEngine();
-	$sessionManager = new SessionManager();
+	$sessionManager = SessionManager::getInstance();
 	
 	$templateEngine->addStyle('pre {white-space: pre-wrap;}');
 	

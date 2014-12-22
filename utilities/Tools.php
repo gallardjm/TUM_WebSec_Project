@@ -2,7 +2,7 @@
 
 class Tools {
 
-	const DEBUG = 2; //if == false no debug, if ==true sessionManager dump in dashboard, if > 1 hash replace by plaintext password and register check by username == 'Alice'
+	const DEBUG = false; //if == false no debug, if ==true sessionManager dump in dashboard, if > 1 hash replace by plaintext password and register check by username == 'Alice'
 	const STORE_ALL = 1;
 
 	const HASH_LENGTH = 10; //default = 10
