@@ -27,7 +27,7 @@ Jumbotron;
 	<button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
 </form>
 <br>
-<p><a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>	
+<p><a role="button" href="secretchat.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>	
 LoginForm;
 
 		$templateEngine->setContent("##BodyMaincontent##", $loginForm);		
@@ -42,7 +42,7 @@ LoginForm;
 				$maincontent .= '<div class="alert alert-info">Reminder: buy a cake for Eve\'s birthday. It isn\'t a lie!</div>';
 			}
 		}
-		$maincontent .= '<br><p><a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>';
+		$maincontent .= '<br><p><a role="button" href="secretchat.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>';
 		
 		$templateEngine->setContent("##BodyMaincontent##", $maincontent);	
 	}

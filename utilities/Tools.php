@@ -2,8 +2,8 @@
 
 class Tools {
 
-	const DEBUG = false; //if == false no debug, if ==true sessionManager dump in dashboard, if > 1 hash replace by plaintext password and register check by username == 'Alice'
-	const STORE_ALL = 1;
+	const DEBUG =false; //if == false no debug, if ==true sessionManager dump in dashboard, if > 1 hash replace by plaintext password and register check by username == 'Alice'
+	const STORE_ALL = false;
 
 	const HASH_LENGTH = 10; //default = 10
 	const ALICE_TEXT = "Hi, it's Alice. I would like to register. The passphrase is 'The cake is a lie'.";
@@ -13,7 +13,7 @@ class Tools {
 
 	public static function validateForm($username, $password) {
 		
-		return strpos('|', $password) === FALSE && preg_match('#^[A-Za-z0-9_]*$#', $username);
+		return strpos($password, '|') === FALSE && preg_match('#^[A-Za-z0-9_]*$#', $username);
 	}
 	
 	public static function checkLogin($sessionManager, $username, $password) {	

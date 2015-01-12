@@ -31,7 +31,7 @@ Jumbotron;
 	<button type="submit" class="btn btn-lg btn-primary btn-block">Register</button>
 </form>
 <br>
-<p><a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>	
+<p><a role="button" href="secretchat.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>	
 RegistrationForm;
 
 		$templateEngine->setContent("##BodyMaincontent##", $registrationForm);		
@@ -52,7 +52,7 @@ TimeMachine;
 			Tools::registerUser($sessionManager, $_POST['username'],$_POST['password']);
 			$maincontent = '<div class="alert alert-success">You can now log in with your username '.$_POST['username'].'</div>';
 		}
-		$maincontent .= '<br><p><a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>';
+		$maincontent .= '<br><p><a role="button" href="secretchat.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>';
 		
 		$templateEngine->setContent("##BodyMaincontent##", $maincontent);	
 	}

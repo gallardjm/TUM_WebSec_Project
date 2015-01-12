@@ -16,7 +16,7 @@ can use your username without knowing your password.</p>
 <h4>Registration for insider only</h4>
 <p class="text-justify">Only user validated by an admin can register to our chat. They also have to use an admin approved username.</p>
 <br>
-<p><a role="button" href="index.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>
+<p><a role="button" href="secretchat.php" class="btn btn-lg btn-info btn-block">Back to index</a></p>
 Content;
 	
 	//$templateEngine->addStyle('p {text-indent:45px}');

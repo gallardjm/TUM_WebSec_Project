@@ -27,7 +27,7 @@ Jumbotron;
 	<pre id="AdminPublicKey">##adminPublicKey##</pre><br>
 </p>
 <br>
-<a role="button" href="dashboard.php" class="btn btn-lg btn-danger btn-block">Back to my evil lair</a>
+<a role="button" href="index.php" class="btn btn-lg btn-danger btn-block">Back to my evil lair</a>
 Eavesdrop;
 
 	$maincontent = str_replace('##aliceCyphertext##', $sessionManager->getData('aliceCyphertext'), $maincontent);
